@@ -43,6 +43,14 @@ class Graph:
             return map (lambda x:str (n.Name) +
                     "->" +str( x.Name),n.Out)    
         return map (arcs_for_node,self.nodes)
+    def to_dot (self,d):
+        f = open(d, 'w')
+        f.write("digraph mygraph \n{\n")
+        for i in (map (lambda x: x.Name, self.nodes)):
+            f.write(" "+str(i)+";\n")
+        for i in sum ((g.get_arcs()),[]):
+            f.write(" "+str (i)+";\n")
+        f.write("}")
 
 # Some procedures 
 def mymax (a,b):
@@ -58,14 +66,6 @@ def mymin (a,b):
         return a
     return min(a,b)
 
-def fillfile (d):
-    f = open(d, 'w')
-    f.write("digraph mygraph \n{\n")
-    for i in (map (lambda x: x.Name, g.nodes)):
-        f.write(" "+str(i)+";\n")
-    for i in sum ((g.get_arcs()),[]):
-        f.write(" "+str (i)+";\n")
-    f.write("}")
 
 # Some graph definition end output example
 init = Node("state_before_time")
@@ -85,4 +85,4 @@ Node.add_arrow(d,e,5)
 Node.add_arrow(c,e,6)
 Node.add_arrow(e,end,0)
 
-fillfile('mygraph.dot')
+g.to_dot('mygraph.dot')
