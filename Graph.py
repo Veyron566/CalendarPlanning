@@ -1,3 +1,4 @@
+from graphviz import Digraph
 # Node has indexes L , F and two dicts of in and out node
 class Node:    
     def __getitem__(self, key):
@@ -40,17 +41,15 @@ class Graph:
         map(backward_progn,initial_node.In)
     def get_arcs (self):
         def arcs_for_node(n):
-            return map (lambda x:str (n.Name) +
-                    "->" +str( x.Name),n.Out)    
+            return map (lambda x:(n, x, n.Out[x]), n.Out)    
         return map (arcs_for_node,self.nodes)
-    def to_dot (self,d):
-        f = open(d, 'w')
-        f.write("digraph mygraph \n{\n")
+    def to_file (self,d):
+        f = Digraph('D', filename = d)
         for i in (map (lambda x: x.Name, self.nodes)):
-            f.write(" "+str(i)+";\n")
-        for i in sum ((g.get_arcs()),[]):
-            f.write(" "+str (i)+";\n")
-        f.write("}")
+            f.node(str (i))
+        for i in sum (g.get_arcs(), []):
+            f.edge(str ((i[0]).Name), str ((i[1]).Name), label = str ( i[2]))
+        return f
 
 # Some procedures 
 def mymax (a,b):
@@ -85,4 +84,5 @@ Node.add_arrow(d,e,5)
 Node.add_arrow(c,e,6)
 Node.add_arrow(e,end,0)
 
-g.to_dot('mygraph.dot')
+
+g.to_file('mygraph.dot').view()
