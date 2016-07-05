@@ -25,30 +25,39 @@ class Graph:
         self.nodes = {e,b}        
     def add_node (self,node):
         self.nodes.add(node)
-    def stright_progn(self):
+    def stright_progn(self,initial_node):
         self.Begin.L = 0
-        initial_node = self.Begin
+        
         def change(node):
             node.L = mymax(initial_node.L+initial_node.Out[node],node.L)
         map(change, initial_node.Out)
-        map(stright_progn,initial_node.Out)
-    def backward_progn (self):
+        map(self.stright_progn , initial_node.Out.keys())
+    def backward_progn (self,initial_node):
         self.End.F = self.End.L
-        initial_node = self.End
+        
         def change(node):
             node.F = mymin(initial_node.F+initial_node.In[node],node.F)
         map(change, initial_node.In)
-        map(backward_progn,initial_node.In)
+        map(self.backward_progn ,initial_node.In)
+    
     def get_arcs (self):
         def arcs_for_node(n):
             return map (lambda x:(n, x, n.Out[x]), n.Out)    
         return map (arcs_for_node,self.nodes)
+   
     def to_file (self,d):
-        f = Digraph('D', filename = d)
-        for i in (map (lambda x: x.Name, self.nodes)):
-            f.node(str (i))
+        f = Digraph('D',
+                    filename = d, 
+                    node_attr = {'shape': 'record'} )
+
+        for i in self.nodes:
+            f.node(str (i),(str (to_graphviz_record (i.Name,i.L,i.F,i.F-i.L))))
+                   
+      #to_graphviz_record(i.Name,i.L,i.F,i.F-i.L)             
         for i in sum (g.get_arcs(), []):
-            f.edge(str ((i[0]).Name), str ((i[1]).Name), label = str ( i[2]))
+            f.edge(str ((i[0])),
+                   str ((i[1])), 
+                   label = str ( i[2]))
         return f
 
 # Some procedures 
@@ -65,10 +74,13 @@ def mymin (a,b):
         return a
     return min(a,b)
 
+def to_graphviz_record (a,b,c,d):
+    return str (a) + "|{" +  str(b) + "|" + str(c)+ "}|" + str (d)
+
 
 # Some graph definition end output example
-init = Node("state_before_time")
-end = Node ("state_after_time")
+init = Node("init")
+end = Node ("term")
 a = Node(1)
 b = Node(2)
 c = Node(3)
@@ -84,5 +96,6 @@ Node.add_arrow(d,e,5)
 Node.add_arrow(c,e,6)
 Node.add_arrow(e,end,0)
 
-
-g.to_file('mygraph.dot').view()
+g.stright_progn(g.Begin)
+g.backward_progn(g.End)
+g.to_file('mygraph.gv').view()

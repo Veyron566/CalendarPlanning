@@ -1,0 +1,17 @@
+digraph D {
+	node [shape=record]
+		<__main__.Node instance at 0x7f7c89c31440> [label="3|{22|22}|0"]
+		<__main__.Node instance at 0x7f7c89c31488> [label="4|{17|23}|6"]
+		<__main__.Node instance at 0x7f7c89c31ea8> [label="1|{0|0}|0"]
+		<__main__.Node instance at 0x7f7c89c314d0> [label="5|{28|28}|0"]
+		<__main__.Node instance at 0x7f7c89c31d88> [label="2|{10|10}|0"]
+		<__main__.Node instance at 0x7f7c89c7c3b0> [label="init|{0|0}|0"]
+		<__main__.Node instance at 0x7f7c89c2abd8> [label="term|{28|28}|0"]
+			<__main__.Node instance at 0x7f7c89c31440> -> <__main__.Node instance at 0x7f7c89c314d0> [label=6]
+			<__main__.Node instance at 0x7f7c89c31488> -> <__main__.Node instance at 0x7f7c89c314d0> [label=5]
+			<__main__.Node instance at 0x7f7c89c31ea8> -> <__main__.Node instance at 0x7f7c89c31d88> [label=10]
+			<__main__.Node instance at 0x7f7c89c314d0> -> <__main__.Node instance at 0x7f7c89c2abd8> [label=0]
+			<__main__.Node instance at 0x7f7c89c31d88> -> <__main__.Node instance at 0x7f7c89c31488> [label=7]
+			<__main__.Node instance at 0x7f7c89c31d88> -> <__main__.Node instance at 0x7f7c89c31440> [label=12]
+			<__main__.Node instance at 0x7f7c89c7c3b0> -> <__main__.Node instance at 0x7f7c89c31ea8> [label=0]
+}
